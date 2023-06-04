@@ -1,0 +1,1 @@
+export const SOCIALA_USER = "SocialaUser"
