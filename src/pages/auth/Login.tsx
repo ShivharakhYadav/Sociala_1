@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { getLocalStorageData } from "../../utils/LocalStorageHelper";
+import { getLocalStorageData, setToLocalStorage } from "../../utils/LocalStorageHelper";
 import { Link, useNavigate } from 'react-router-dom'
 import { SOCIALA_USER } from "../../utils/Keys";
 import Heading from "../../components/Heading";
 import { Box, Button, Container, Grid, Paper, TextField, Typography } from "@mui/material";
 import { loginRequest } from '../../Api Services/AuthService';
+import { useDispatch } from "react-redux";
+import providerActions from "../../store/actions/provider/actions";
+import { tokenDecode } from "../../utils/HelperFunction";
 
 function Login() {
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const [authCredential, setAuthCredential] = useState({
         authUserId: "",
         authPassword: ""
@@ -18,14 +22,35 @@ function Login() {
         setAuthCredential({ ...authCredential, [field]: value })
     }
     const loginUser = async () => {
-        const result: any = await loginRequest(authCredential);
-        console.log("Res", result);
+        const result = await loginRequest(authCredential);
+        console.log("--loginRequest---", result);
+
+        if (result?.success === true) {
+            // navigate('/test');
+            dispatch(providerActions.save_user(result?.data));
+            setToLocalStorage(SOCIALA_USER, { accessToken: result?.accessToken, id: result?.data?.id })
+        }
     }
+
+    useEffect(() => {
+        console.log("Login Usefeffect called")
+        const localData = getLocalStorageData(SOCIALA_USER);
+        console.log("localData", localData)
+        if (localData != null && localData.accessToken) {
+            const tokenExpired = tokenDecode(localData?.accessToken)
+            console.log("tokenExpi", tokenExpired)
+            if (!tokenExpired) {
+                console.log("not expired")
+                dispatch(providerActions.save_user({ _id: localData?.id }));
+                // navigate("/")
+            }
+        }
+    }, [])
     return (
         <Container disableGutters>
             <Grid container>
                 <Grid item md={6}>
-                    <img src="login-bg.jpg" style={{height:"99vh"}} width="100%" alt="login-bg" />
+                    <img src="login-bg.jpg" style={{ height: "99vh" }} width="100%" alt="login-bg" />
                 </Grid>
                 <Grid item md={6} display="flex" justifyContent="center" alignItems="center">
                     <Container >

@@ -2,8 +2,8 @@ import providersConstant from "../../actions/provider/actionTypes"
 import { setToLocalStorage } from "../../../utils/LocalStorageHelper"
 import * as localStorageKeys from "../../../utils/Keys"
 
-type userTypes = {
-    _id: string;
+type userDataType = {
+    id: string;
     followers: Array<number>;
     followings: Array<number>;
     name: string;
@@ -17,12 +17,12 @@ type userTypes = {
     username: string;
 }
 interface initialStateType {
-    user: userTypes,
+    user: userDataType,
     isLoggedIn: Boolean
 }
 const initialState: initialStateType = {
     user: {
-        _id: "d",
+        id: "",
         followers: [],
         followings: [],
         name: "",
@@ -37,12 +37,17 @@ const initialState: initialStateType = {
     },
     isLoggedIn: false
 }
+
 const providerReducer: any = (state = initialState, action: any) => {
     // console.log("providerReduce", action.type, action.payload)
     switch (action.type) {
-        case providersConstant.SAVE_USER: return {
-            ...state, user: action.payload
-        }
+        case providersConstant.SAVE_USER:
+            const obj = action.payload;
+            obj.id = obj._id;
+            delete obj._id;
+
+            return { ...state, user: obj };
+            
         case providersConstant.UPDATE_USER:
             let oldValue: any = state.user;
             for (let key in action.payload) {

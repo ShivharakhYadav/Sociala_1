@@ -7,32 +7,34 @@ import { getLocalStorageData } from './utils/LocalStorageHelper';
 import { SOCIALA_USER } from './utils/Keys';
 import './App.css'
 import Register from './pages/auth/Register';
+import { useDispatch, useSelector } from 'react-redux';
+import { tokenDecode } from './utils/HelperFunction';
+import { getSingleUserRequest } from './Api Services/AccountServices';
+import providerActions from './store/actions/provider/actions';
+import Header from './pages/Header';
 function App() {
-  const [isAuthenticated, SetAuthenticated] = useState(false);
-  const navigate = useNavigate();
-  useEffect(() => {
-    const localData = getLocalStorageData(SOCIALA_USER);
-    console.log(localData)
-    if (localData != null) {
-      SetAuthenticated(true)
-    }
-    // else {
-    //   navigate("/");
-    // }
-  }, [])
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.providerReducer?.user);
+  console.log("user", user)
 
   return (
-    <Routes>
-      <Route path='/' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path="/" element={
-        <ProtectedRoute isAuthenticated={isAuthenticated} SetAuthenticated={SetAuthenticated}>
-          <Home />
-        </ProtectedRoute>
-      } />
-      <Route path='/home2' element={<Home />} />
-      <Route path='*' element={<h1>Not Found</h1>} />
-    </ Routes>
+    <>
+      {user?.id && <Header />}
+      <Routes>
+        {
+          user?.id ?
+            <>
+              <Route element={<Home />} path='/' />
+            </>
+            :
+            <>
+              <Route element={<Login />} path="/" />
+              <Route element={<Register />} path="/register" />
+            </>
+        }
+      </ Routes>
+    </>
+
   )
 }
 

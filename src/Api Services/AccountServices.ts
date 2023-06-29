@@ -35,9 +35,35 @@ accountInstance.interceptors.response.use(
 // export const uploadNewPostURL = `${accountURL}upload/`;
 // export const notificationURL = `${accountURL}changeNotificationStatus/`;
 
-export const getSingleUserRequest = async (username: any) => {
+
+type UserDataType = {
+    id: number;
+    password: String;
+    name: String;
+    mobileno: Number;
+    email: String;
+    followers: Array<number>;
+    followings: Array<number>;
+    account_type: String;
+    notifications: Array<number>;
+    post: Array<object>;
+    saved: Array<object>;
+    // tagged: Array;
+    pendingRequests: Array<number>;
+    bio: String;
+    gender: String;
+    profileimg: String;
+}
+type responseTypes = {
+    message: string;
+    success: Boolean;
+    data: UserDataType;
+};
+
+
+export const getSingleUserRequest = async (id: string): Promise<responseTypes | null> => {
     try {
-        let response = await accountInstance.get(`user/${username}`);
+        let response = await accountInstance.get(`user/${id}`);
         if (response.status === 200) {
             return response?.data;
         }

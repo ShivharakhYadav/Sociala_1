@@ -1,4 +1,8 @@
-export const getLocalStorageData = (key: string) => {
+type localDataType = {
+    id: string;
+    accessToken: string
+}
+export const getLocalStorageData = (key: string): localDataType | null => {
     try {
         let jsonData: any = localStorage.getItem(key);
         if ((jsonData !== "undefined" && jsonData !== "null") && typeof (JSON.parse(jsonData)) == "object") {

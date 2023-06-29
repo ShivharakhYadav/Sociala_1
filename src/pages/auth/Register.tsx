@@ -2,15 +2,24 @@ import { Box, Button, Container, Grid, TextField, Typography } from "@mui/materi
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerRequest } from "../../Api Services/AuthService";
+import { useDispatch } from "react-redux"
+import providerActions from "../../store/actions/provider/actions";
 
+type userDetail = {
+    username: string,
+    name: string,
+    password: string,
+    emailorphone?: string | number,
+    email?: string,
+    mobileno?: number
+}
 const Register = () => {
     const navigate = useNavigate();
-
-    const [details, setDetails] = useState({
+    const [details, setDetails] = useState<userDetail>({
         username: '',
         name: '',
         password: '',
-        userId: ''
+        emailorphone: ""
     })
 
     const onChangeMethod = (e: any) => {
@@ -27,11 +36,21 @@ const Register = () => {
     }
 
     const registerUser = async () => {
-        const result: any = await registerRequest(details);
-        if (result.success === true) {
-            navigate('/');
+        const newRequestObj = details
+        if (isNaN(details?.emailorphone as any)) {
+            newRequestObj.email = details.emailorphone as string;
+            delete newRequestObj.emailorphone;
         }
+        else {
+            newRequestObj.mobileno = details.emailorphone as number;
+            delete newRequestObj.emailorphone;
+        }
+        const result: any = await registerRequest(newRequestObj);
         // }
+    }
+
+    function checkEmailOrNot(str: string) {
+
     }
     return (
         <Container disableGutters>

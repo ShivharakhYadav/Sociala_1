@@ -1,6 +1,5 @@
-import React, { } from "react";
+import React, { useEffect } from "react";
 const Home: React.FunctionComponent = () => {
-    console.log("home called")
     return (
         <>
             <div>
