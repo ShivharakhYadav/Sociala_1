@@ -1,4 +1,3 @@
-import react from 'react'
 import { Typography, AppBar, Toolbar, Box, TextField, IconButton, InputAdornment } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,12 +19,6 @@ function Header() {
     return (
         <AppBar sx={{ backgroundColor: "white" }}>
             <Toolbar>
-                {/* <Box
-          component="img"
-          src="logo.jpg"
-          sx={{ height: `50px`, width: "100px" }}
-        // sx={{height:"fit-content"}}
-        /> */}
                 <Typography variant="h3" width={"280px"} color={"black"}>Logo</Typography>
                 <TextField
                     InputProps={{
@@ -38,7 +31,6 @@ function Header() {
                     placeholder='Search'
                     value=""
                     className={test.root}
-                // sx={{ borderRadius: "30px !important" }}
                 />
                 <Box display="flex" flexGrow={1}>
                     <IconButton>

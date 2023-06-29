@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getLocalStorageData, setToLocalStorage } from "../../utils/LocalStorageHelper";
 import { Link, useNavigate } from 'react-router-dom'
 import { SOCIALA_USER } from "../../utils/Keys";
-import Heading from "../../components/Heading";
-import { Box, Button, Container, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { loginRequest } from '../../Api Services/AuthService';
 import { useDispatch } from "react-redux";
 import providerActions from "../../store/actions/provider/actions";
@@ -56,9 +55,6 @@ function Login() {
                     <Container >
                         <Grid container display="flex" justifyContent="center" alignItems="center">
                             <Grid item
-                                // component={Paper}
-                                // gap={2}
-                                // elevation={5}
                                 xs={12} sm={6} md={6} lg={5} xl={5}
                                 display="flex"
                                 gap="20px"
