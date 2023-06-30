@@ -2,7 +2,6 @@ import jwtDecode from 'jwt-decode'
 export const tokenDecode = (token: string): Boolean => {
     try {
         const decodedToken: any = jwtDecode(token);
-        console.log(decodedToken)
         const todayUTCString = new Date().toUTCString();
         const todayUTCSecond = new Date(todayUTCString).getTime();
         const expUTCSecond = decodedToken.exp * 1000;

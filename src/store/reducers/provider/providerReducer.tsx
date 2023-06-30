@@ -2,7 +2,7 @@ import providersConstant from "../../actions/provider/actionTypes"
 import { setToLocalStorage } from "../../../utils/LocalStorageHelper"
 import * as localStorageKeys from "../../../utils/Keys"
 
-type userDataType = {
+export type userDataType = {
     id: string;
     followers: Array<number>;
     followings: Array<number>;
@@ -16,9 +16,8 @@ type userDataType = {
     tagged: Array<object>;
     username: string;
 }
-interface initialStateType {
-    user: userDataType,
-    isLoggedIn: Boolean
+export interface initialStateType {
+    user: userDataType;
 }
 const initialState: initialStateType = {
     user: {
@@ -34,8 +33,7 @@ const initialState: initialStateType = {
         saved: [],
         tagged: [],
         username: ""
-    },
-    isLoggedIn: false
+    }
 }
 
 const providerReducer: any = (state = initialState, action: any) => {
@@ -43,11 +41,13 @@ const providerReducer: any = (state = initialState, action: any) => {
     switch (action.type) {
         case providersConstant.SAVE_USER:
             const obj = action.payload;
-            obj.id = obj._id;
-            delete obj._id;
+            if (obj?._id) {
+                delete obj._id;
+                obj.id = obj._id;
+            }
 
             return { ...state, user: obj };
-            
+
         case providersConstant.UPDATE_USER:
             let oldValue: any = state.user;
             for (let key in action.payload) {
@@ -91,13 +91,29 @@ const providerReducer: any = (state = initialState, action: any) => {
         case providersConstant.FOLLOW_ACCEPTED:
             // const checkAvail = state?.user?.followings?.filter((ids: any) => ids == action.payload);
             // if (checkAvail.length < 1) {
-            const newObj = { ...state.user, followings: [...state.user.followings, action.payload] };
+            const newObj = { ...state.user, followings: [...state?.user?.followings, action.payload] };
             setToLocalStorage(localStorageKeys.SOCIALA_USER, newObj);
             return {
-                ...state, user: { ...state.user, followings: [...state.user.followings, action.payload] }
+                ...state, user: { ...state.user, followings: [...state?.user?.followings, action.payload] }
             }
             // }
             break;
+
+        case providersConstant.LOGOUT: return state.user = {
+            id: "",
+            followers: [],
+            followings: [],
+            name: "",
+            notification: [],
+            password: "",
+            pendingRequests: [],
+            phone: "",
+            post: [],
+            saved: [],
+            tagged: [],
+            username: ""
+        }
+
         default: {
             return state
         }

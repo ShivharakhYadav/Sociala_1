@@ -7,6 +7,7 @@ import { loginRequest } from '../../Api Services/AuthService';
 import { useDispatch } from "react-redux";
 import providerActions from "../../store/actions/provider/actions";
 import { tokenDecode } from "../../utils/HelperFunction";
+import { getSingleUserRequest } from "../../Api Services/AccountServices";
 
 function Login() {
     const navigate = useNavigate();
@@ -27,23 +28,23 @@ function Login() {
         if (result?.success === true) {
             // navigate('/test');
             dispatch(providerActions.save_user(result?.data));
-            setToLocalStorage(SOCIALA_USER, { accessToken: result?.accessToken, id: result?.data?.id })
+            setToLocalStorage(SOCIALA_USER, { accessToken: result?.accessToken, username: result?.data?.username })
         }
     }
 
     useEffect(() => {
-        console.log("Login Usefeffect called")
-        const localData = getLocalStorageData(SOCIALA_USER);
-        console.log("localData", localData)
-        if (localData != null && localData.accessToken) {
-            const tokenExpired = tokenDecode(localData?.accessToken)
-            console.log("tokenExpi", tokenExpired)
-            if (!tokenExpired) {
-                console.log("not expired")
-                dispatch(providerActions.save_user({ _id: localData?.id }));
-                // navigate("/")
+        (async () => {
+            const localData = getLocalStorageData(SOCIALA_USER);
+            if (localData != null && localData.accessToken) {
+                const tokenExpired = tokenDecode(localData?.accessToken)
+                console.log("tokenExpi", tokenExpired)
+                if (!tokenExpired) {
+                    const userResult = await getSingleUserRequest(localData?.username);
+                    console.log("userResult", userResult);
+                    dispatch(providerActions.save_user(userResult?.data));
+                }
             }
-        }
+        })();
     }, [])
     return (
         <Container disableGutters>

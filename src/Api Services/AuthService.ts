@@ -13,6 +13,7 @@ const authInstance = axios.create({
 
 type UserDataType = {
     id: number;
+    username: string;
     password: String;
     name: String;
     mobileno: Number;

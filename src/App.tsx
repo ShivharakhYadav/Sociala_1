@@ -5,6 +5,8 @@ import './App.css'
 import Register from './pages/auth/Register';
 import { useDispatch, useSelector } from 'react-redux';
 import Header from './pages/Header';
+import EditProfile from './pages/Profiles/EditProfile';
+import Userprofile from './pages/Profiles/Userprofile';
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.providerReducer?.user);
@@ -12,12 +14,14 @@ function App() {
 
   return (
     <>
-      {user?.id && <Header />}
+      {user?.username && <Header />}
       <Routes>
         {
-          user?.id ?
+          user?.username ?
             <>
               <Route element={<Home />} path='/' />
+              <Route element={<Userprofile />} path='/:username' />
+              <Route element={<EditProfile />} path='/:username/edit' />
             </>
             :
             <>
@@ -27,7 +31,6 @@ function App() {
         }
       </ Routes>
     </>
-
   )
 }
 

@@ -1,5 +1,5 @@
 type localDataType = {
-    id: string;
+    username: string;
     accessToken: string
 }
 export const getLocalStorageData = (key: string): localDataType | null => {

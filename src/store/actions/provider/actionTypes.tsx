@@ -4,6 +4,7 @@ const providersConstant = {
     UPDATE_USER: "UPDATE_USER",
     CHANGE_NOTIFICATION_STATUS: 'CHANGE_NOTIFICATION_STATUS',
     FOLLOW_ACCEPTED: 'FOLLOW_ACCEPTED',
-    NEW_POST: 'NEW_POST'
+    NEW_POST: 'NEW_POST',
+    LOGOUT: 'LOGOUT'
 }
 export default providersConstant;
