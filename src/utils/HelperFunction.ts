@@ -12,6 +12,6 @@ export const tokenDecode = (token: string): Boolean => {
         }
     } catch (err) {
         console.log(err)
-        return false
+        return true;
     }
 }

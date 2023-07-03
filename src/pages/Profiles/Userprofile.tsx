@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container'
-import { Grid, Stack, Tab, Tabs } from '@mui/material'
+import { Grid, Stack, Tab, Tabs, Avatar } from '@mui/material'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -80,8 +80,11 @@ function Userprofile() {
                     <Box>
                         <Box style={{ backgroundColor: 'yellow' }}>
                             <Box display='flex' justifyContent='space-evenly'>
-                                <Box>
+                                {/* <Box>
                                     <img src="bird.jpg" alt="profile pic" style={{ height: '100px', width: '100px', borderRadius: '50%' }} />
+                                </Box> */}
+                                <Box>
+                                    <Avatar sx={{ height: "100px", width: "100px" }} src={userDetails?.username} />
                                 </Box>
                                 <Box>
                                     <Typography variant='h3'>{userDetails?.username}</Typography>

@@ -1,23 +1,23 @@
 import providersConstant from "../../actions/provider/actionTypes"
 import { setToLocalStorage } from "../../../utils/LocalStorageHelper"
 import * as localStorageKeys from "../../../utils/Keys"
+// import { UserDataType } from "../../../Types/types";
 
-export type userDataType = {
+export type UserDataType = {
     id: string;
     followers: Array<number>;
     followings: Array<number>;
     name: string;
-    notification: Array<object>;
-    password: string;
+    notifications: Array<object>;
     pendingRequests: Array<number>;
-    phone: string;
+    mobileno: string;
     post: Array<object>;
     saved: Array<object>;
     tagged: Array<object>;
     username: string;
 }
 export interface initialStateType {
-    user: userDataType;
+    user: UserDataType;
 }
 const initialState: initialStateType = {
     user: {
@@ -25,10 +25,9 @@ const initialState: initialStateType = {
         followers: [],
         followings: [],
         name: "",
-        notification: [],
-        password: "",
+        notifications: [],
         pendingRequests: [],
-        phone: "",
+        mobileno: "",
         post: [],
         saved: [],
         tagged: [],
@@ -37,13 +36,13 @@ const initialState: initialStateType = {
 }
 
 const providerReducer: any = (state = initialState, action: any) => {
-    // console.log("providerReduce", action.type, action.payload)
+    console.log("providerReduce", action.type, action.payload)
     switch (action.type) {
         case providersConstant.SAVE_USER:
             const obj = action.payload;
-            if (obj?._id) {
-                delete obj._id;
+            if (obj._id) {
                 obj.id = obj._id;
+                delete obj._id;
             }
 
             return { ...state, user: obj };
@@ -75,7 +74,7 @@ const providerReducer: any = (state = initialState, action: any) => {
 
         case providersConstant.CHANGE_NOTIFICATION_STATUS:
             let ids = action.payload;
-            let notifications = state?.user?.notification;
+            let notifications = state?.user?.notifications;
             notifications?.map((item: any) => {
                 ids.map((singleId: any) => {
                     if ((singleId == item.notificationId)) {
@@ -104,10 +103,9 @@ const providerReducer: any = (state = initialState, action: any) => {
             followers: [],
             followings: [],
             name: "",
-            notification: [],
-            password: "",
+            notifications: [],
             pendingRequests: [],
-            phone: "",
+            mobileno: "",
             post: [],
             saved: [],
             tagged: [],

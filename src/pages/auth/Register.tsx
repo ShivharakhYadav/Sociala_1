@@ -36,6 +36,7 @@ const Register = () => {
     }
 
     const registerUser = async () => {
+        debugger
         const newRequestObj = details
         if (isNaN(details?.emailorphone as any)) {
             newRequestObj.email = details.emailorphone as string;

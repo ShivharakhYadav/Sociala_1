@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import providerActions from '../store/actions/provider/actions';
 import providersConstant from '../store/actions/provider/actionTypes';
 import PostCard from '../components/PostCard';
-import { userDataType } from '../store/reducers/provider/providerReducer';
+import { UserDataType } from '../store/reducers/provider/providerReducer';
 import { stateTypes } from '../Types/types';
 
 // import { postRequest } from '../services/Services'
@@ -40,7 +40,7 @@ function Home() {
     // }, [userDetails?.user?.followings])
 
     return (
-        <Stack alignItems="center" spacing={3} paddingTop={"64px"}>
+        <Stack alignItems="center" spacing={3} >
             {
                 user?.post?.length > 0 ? <>
                     {user?.post?.map((post: any, i: any) => {

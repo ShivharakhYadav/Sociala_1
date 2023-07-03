@@ -4,14 +4,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { SOCIALA_USER } from "../../utils/Keys";
 import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { loginRequest } from '../../Api Services/AuthService';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import providerActions from "../../store/actions/provider/actions";
 import { tokenDecode } from "../../utils/HelperFunction";
 import { getSingleUserRequest } from "../../Api Services/AccountServices";
+import { stateTypes } from "../../Types/types";
 
 function Login() {
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const user = useSelector((state: stateTypes) => state?.providerReducer?.user);
     const [authCredential, setAuthCredential] = useState({
         authUserId: "",
         authPassword: ""
@@ -34,15 +36,19 @@ function Login() {
 
     useEffect(() => {
         (async () => {
+            console.log("Login Called");
             const localData = getLocalStorageData(SOCIALA_USER);
-            if (localData != null && localData.accessToken) {
+            if (localData != null && localData.accessToken && user.username) {
                 const tokenExpired = tokenDecode(localData?.accessToken)
                 console.log("tokenExpi", tokenExpired)
-                if (!tokenExpired) {
+                if (!tokenExpired && !user?.username) {
                     const userResult = await getSingleUserRequest(localData?.username);
                     console.log("userResult", userResult);
                     dispatch(providerActions.save_user(userResult?.data));
                 }
+                // else {
+                //     navigate("/")
+                // }
             }
         })();
     }, [])

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { UserDataType } from '../Types/types';
 
 const baseURL = 'http://localhost:4100';
 
@@ -29,31 +30,7 @@ accountInstance.interceptors.response.use(
     }
 )
 
-// export const singleRecordURL = `${accountURL}user/`;
-// export const searchUserURL = `${accountURL}search/`;
-// export const updateUserURL = `${accountURL}update/`;
-// export const uploadNewPostURL = `${accountURL}upload/`;
-// export const notificationURL = `${accountURL}changeNotificationStatus/`;
 
-
-type UserDataType = {
-    id: number;
-    password: String;
-    name: String;
-    mobileno: Number;
-    email: String;
-    followers: Array<number>;
-    followings: Array<number>;
-    account_type: String;
-    notifications: Array<number>;
-    post: Array<object>;
-    saved: Array<object>;
-    // tagged: Array;
-    pendingRequests: Array<number>;
-    bio: String;
-    gender: String;
-    profileimg: String;
-}
 type responseTypes = {
     message: string;
     success: Boolean;
@@ -107,3 +84,12 @@ export const putRequest = async (url: any, headers: any, body: any) => {
         return null
     }
 }
+
+
+
+
+// export const singleRecordURL = `${accountURL}user/`;
+// export const searchUserURL = `${accountURL}search/`;
+// export const updateUserURL = `${accountURL}update/`;
+// export const uploadNewPostURL = `${accountURL}upload/`;
+// export const notificationURL = `${accountURL}changeNotificationStatus/`;

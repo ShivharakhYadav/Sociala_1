@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UserDataType } from "../Types/types";
 
 const baseURL = "http://localhost:4100";
 
@@ -11,25 +12,7 @@ const authInstance = axios.create({
     },
 });
 
-type UserDataType = {
-    id: number;
-    username: string;
-    password: String;
-    name: String;
-    mobileno: Number;
-    email: String;
-    followers: Array<number>;
-    followings: Array<number>;
-    account_type: String;
-    notifications: Array<number>;
-    post: Array<object>;
-    saved: Array<object>;
-    // tagged: Array;
-    pendingRequests: Array<number>;
-    bio: String;
-    gender: String;
-    profileimg: String;
-}
+
 type loginResponseType = {
     accessToken: string;
     message: string;

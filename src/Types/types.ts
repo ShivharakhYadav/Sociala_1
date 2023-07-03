@@ -1,20 +1,25 @@
 
-export type userDataType = {
-    id: string;
+export type UserDataType = {
+    _id?: string
+    id?: string | undefined;
+    username: string;
+    name: string;
+    mobileno?: string;
+    email?: String;
     followers: Array<number>;
     followings: Array<number>;
-    name: string;
-    notification: Array<object>;
-    password: string;
-    pendingRequests: Array<number>;
-    phone: string;
+    account_type?: String;
+    notifications: Array<object>;
     post: Array<object>;
-    saved: Array<object>;
-    tagged: Array<object>;
-    username: string;
+    saved?: Array<object>;
+    tagged?: Array<object>;
+    pendingRequests?: Array<number>;
+    bio?: String;
+    gender?: String;
+    profileimg?: String;
 }
 export interface initialStateType {
-    user: userDataType
+    user: UserDataType
 }
 
 export type stateTypes = {
