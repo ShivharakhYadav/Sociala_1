@@ -5,6 +5,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import Badge from '@mui/material/Badge';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import BoltIcon from '@mui/icons-material/Bolt';
 import InputBase from '@mui/material/InputBase';
@@ -80,6 +82,8 @@ function Header() {
     const [searched, setSearched] = useState("");
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const [NotificationAnchor, setNotificationAnchor] = useState<null | HTMLElement>(null);
+    const isNotificationMenuOpen = Boolean(NotificationAnchor);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -125,7 +129,13 @@ function Header() {
         }
     }
 
-
+    const handleNotification = async (event: React.MouseEvent<HTMLElement>) => {
+        setNotificationAnchor(event.currentTarget);
+        // const ids = userDetails?.notification.filter((item: any) => !item.readed).map((item: any) => { return item.notificationId })
+        // if (ids.length > 0) {
+        //     let result = await postRequest(`${notificationURL}${userDetails._id}`, "", { notification_ids: ids })
+        // }
+    }
 
     const searchuser = async (e: any) => {
         try {
@@ -139,11 +149,52 @@ function Header() {
         catch (err) { console.log(err) }
     }
 
+    const notificationId = 'notification-of-current-user';
+    const renderNotification = (
+        <Menu
+            anchorEl={NotificationAnchor}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={notificationId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isNotificationMenuOpen}
+            onClose={() => setNotificationAnchor(null)}
+        >
+            {
+                user?.notifications?.length > 0 && user?.notifications.map((item: any, i: any) => {
+                    if (item.type === "RequestedToFollow") {
+                        return <MenuItem
+                            title={`${item.type}${Date.now()}`}
+                            key={`${item.type}${i}`}
+                            onClick={() => { setNotificationAnchor(null); navigate(`/${item.requester.username}`, { state: item.requester }) }}
+                        >{`${item.requester.username} wants to follow you`}</MenuItem>
+                    }
+                    if (item.type === "followRequestedAccepted") {
+                        return <MenuItem
+                            title={`${item.type}${Date.now()}`}
+                            key={`${item.type}${i}`}
+                            onClick={() => { setNotificationAnchor(null); navigate(`/${item.requester.username}`, { state: item.requester }) }}
+                        >
+                            {`${item.requester.username} started following you.`}
+                        </MenuItem>
+                    }
+                    return null;
+                })
+            }
+        </Menu>);
+
     return (
-        <AppBar sx={{ backgroundColor: "white", }}>
-            <Toolbar sx={{ justifyContent: "space-between" }}>
-                <Typography variant="h3" color={"black"}>Logo</Typography>
-                {/* <TextField
+        <>
+            <AppBar sx={{ backgroundColor: "white", }}>
+                <Toolbar sx={{ justifyContent: "space-between" }}>
+                    <Typography variant="h3" color={"black"}>Logo</Typography>
+                    {/* <TextField
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -155,83 +206,94 @@ function Header() {
                     value=""
                     className={test.root}
                 /> */}
-                <Box>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
-                            onChange={searchuser}
-                            value={searched}
-                            onFocus={() => { setShow(true) }}
-                        // onBlur={() => { setShow(false) }}
-                        />
-                    </Search>
+                    <Box>
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="Search…"
+                                inputProps={{ 'aria-label': 'search' }}
+                                onChange={searchuser}
+                                value={searched}
+                                onFocus={() => { setShow(true) }}
+                            // onBlur={() => { setShow(false) }}
+                            />
+                        </Search>
 
-                    {
-                        show && <Paper sx={{ height: '300px', width: 'inherit', position: 'absolute', top: '55px', left: '100px', zIndex: "1" }}>
-                            {
-                                result.length > 0 ?
-                                    <>
-                                        {result.map((item: any, i) => {
-                                            return <div key={`${item._id}`}>
-                                                <Link
-                                                    to={`/${item.username}`}
-                                                    onClick={() => { setSearched(""); setShow(false) }}
-                                                    state={item}
-                                                >{item.username}</Link>
-                                            </div>
-                                        })}
-                                    </> :
-                                    <LoopIcon className="loop" sx={{ position: 'absolute', left: '50%', top: "50%", trransform: "translate(-50%, -50%)" }} />
-                            }
-                        </Paper>
-                    }
-                </Box>
-                <Box sx={{ width: "17%", display: "flex", justifyContent: "space-between" }}>
-                    <IconButton sx={{ backgroundColor: "currentcolor" }}>
-                        <HomeIcon />
-                    </IconButton>
-                    <IconButton sx={{ backgroundColor: "currentcolor" }}>
-                        <BoltIcon />
-                    </IconButton>
-                    <IconButton sx={{ backgroundColor: "currentcolor" }}
-                        edge="end">
-                        <ChatBubbleOutlineOutlinedIcon />
-                    </IconButton>
-                    <Tooltip title="Open settings">
-                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                            <Avatar alt="Shiv" src="" />
+                        {
+                            show && <Paper sx={{ height: '300px', width: 'inherit', position: 'absolute', top: '55px', left: '100px', zIndex: "1" }}>
+                                {
+                                    result.length > 0 ?
+                                        <>
+                                            {result.map((item: any, i) => {
+                                                return <div key={`${item._id}`}>
+                                                    <Link
+                                                        to={`/${item.username}`}
+                                                        onClick={() => { setSearched(""); setShow(false) }}
+                                                        state={item}
+                                                    >{item.username}</Link>
+                                                </div>
+                                            })}
+                                        </> :
+                                        <LoopIcon className="loop" sx={{ position: 'absolute', left: '50%', top: "50%", trransform: "translate(-50%, -50%)" }} />
+                                }
+                            </Paper>
+                        }
+                    </Box>
+                    <Box sx={{ width: "17%", display: "flex", justifyContent: "space-between" }}>
+                        <IconButton sx={{ backgroundColor: "currentcolor" }}>
+                            <HomeIcon />
                         </IconButton>
-                    </Tooltip>
-                    <Menu
-                        sx={{ mt: '45px' }}
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
-                    >
-                        {settings.map((setting) => (
-                            <MenuItem key={setting} onClick={handleMenuItem} >
-                                <Typography textAlign="center" title={setting}>{setting}</Typography>
-                            </MenuItem>
-                        ))}
-                    </Menu>
-                </Box>
-            </Toolbar>
-        </AppBar >
+                        <IconButton sx={{ backgroundColor: "currentcolor" }}>
+                            <BoltIcon />
+                        </IconButton>
+                        <IconButton sx={{ backgroundColor: "currentcolor" }}
+                            size="large"
+                            aria-label="show 17 new notifications"
+                            aria-controls={notificationId}
+                            aria-haspopup="true"
+                            onClick={handleNotification}
+                        // color="inherit"
+                        >
+                            <Badge badgeContent={user?.notifications?.filter((item: any) => !item.readed).length} color="error">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                        <Tooltip title="Open settings">
+                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                <Avatar alt="Shiv" src="" />
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {settings.map((setting) => (
+                                <MenuItem key={setting} onClick={handleMenuItem} >
+                                    <Typography textAlign="center" title={setting}>{setting}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                </Toolbar>
+            </AppBar >
+            {renderNotification}
+        </>
     )
 }
 
 export default Header;
+

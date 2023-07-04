@@ -4,7 +4,7 @@ import * as localStorageKeys from "../../../utils/Keys"
 // import { UserDataType } from "../../../Types/types";
 
 export type UserDataType = {
-    id: string;
+    _id: string;
     followers: Array<number>;
     followings: Array<number>;
     name: string;
@@ -21,7 +21,7 @@ export interface initialStateType {
 }
 const initialState: initialStateType = {
     user: {
-        id: "",
+        _id: "",
         followers: [],
         followings: [],
         name: "",
@@ -38,14 +38,7 @@ const initialState: initialStateType = {
 const providerReducer: any = (state = initialState, action: any) => {
     console.log("providerReduce", action.type, action.payload)
     switch (action.type) {
-        case providersConstant.SAVE_USER:
-            const obj = action.payload;
-            if (obj._id) {
-                obj.id = obj._id;
-                delete obj._id;
-            }
-
-            return { ...state, user: obj };
+        case providersConstant.SAVE_USER: return { ...state, user: action.payload };
 
         case providersConstant.UPDATE_USER:
             let oldValue: any = state.user;
@@ -99,7 +92,7 @@ const providerReducer: any = (state = initialState, action: any) => {
             break;
 
         case providersConstant.LOGOUT: return state.user = {
-            id: "",
+            _id: "",
             followers: [],
             followings: [],
             name: "",

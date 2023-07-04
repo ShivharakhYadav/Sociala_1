@@ -16,6 +16,7 @@ import providerActions from './store/actions/provider/actions';
 import BasicModal from './pages/NewPost';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import PersonalUserProfile from './pages/PersonalUserProfile';
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.providerReducer?.user);
@@ -35,9 +36,9 @@ function App() {
           console.log("userResult App", userResult?.data);
           dispatch(providerActions.save_user(userResult?.data));
         }
-        // else {
-        //   navigate("/")
-        // }
+        else {
+          navigate("/")
+        }
       }
     })();
   }, [])
@@ -50,9 +51,10 @@ function App() {
           user?.username ?
             <>
               <Route element={<Home />} path='/' />
-              <Route element={<Userprofile />} path='/:username' />
+              <Route element={<Userprofile />} path='/profile' />
               <Route element={<EditProfile />} path='/:username/edit' />
               <Route element={<BasicModal />} path='/post' />
+              <Route element={<PersonalUserProfile />} path='/:username' />
             </>
             :
             <>

@@ -5,6 +5,12 @@ const baseURL = 'http://localhost:4100';
 
 const accountURL = `${baseURL}/account/`;
 
+type responseTypes = {
+    message: string;
+    success: Boolean;
+    data: UserDataType;
+};
+
 const accountInstance = axios.create({
     baseURL: accountURL
 });
@@ -30,17 +36,9 @@ accountInstance.interceptors.response.use(
     }
 )
 
-
-type responseTypes = {
-    message: string;
-    success: Boolean;
-    data: UserDataType;
-};
-
-
-export const getSingleUserRequest = async (id: string): Promise<responseTypes | null> => {
+export const getSingleUserRequest = async (username: string): Promise<responseTypes | null> => {
     try {
-        let response = await accountInstance.get(`user/${id}`);
+        let response = await accountInstance.get(`user/${username}`);
         if (response.status === 200) {
             return response?.data;
         }
@@ -62,30 +60,6 @@ export const searchUserRequest = async (key: string) => {
         return null;
     }
 }
-
-export const putRequest = async (url: any, headers: any, body: any) => {
-    try {
-        const defaultHeaders = {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        }
-
-        const newHeaders = typeof (headers) == "object" ? { ...defaultHeaders, ...headers } : defaultHeaders;
-
-        let reponse = await fetch(url, {
-            method: "PUT",
-            headers: newHeaders,
-            body: JSON.stringify(body)
-        });
-        let result = await reponse.json();
-        return result;
-    }
-    catch (err) {
-        return null
-    }
-}
-
-
 
 
 // export const singleRecordURL = `${accountURL}user/`;

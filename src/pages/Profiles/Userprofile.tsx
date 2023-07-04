@@ -10,8 +10,6 @@ import { Link } from 'react-router-dom';
 // import { getLocalStorageData, setToLocalStorage } from '../../utilities/LocalStorageHandler';
 // import localStorageKeys from '../../utilities/LocalStorageKeys';
 // import providerActions from '../../store/actions/provider/actions';
-// import { getRequest, postRequest } from '../../services/Services';
-// import { singleRecordURL } from '../../services/Links';
 // import Followers_Following_Modal from '../../Components/Followers_Following_Modal';
 function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
@@ -57,22 +55,21 @@ function Userprofile() {
         setModalData({ open: true, data: userDetails[title] })
     }
 
-    useEffect(() => {
-        // (
-        //     async function () {
-        //         if (!userDetails._id) {
-        //             let data: any = getLocalStorageData(localStorageKeys.USER_DETAILS);
-        //             let result = await getRequest(`${singleRecordURL}${data.username}`);
+    // useEffect(() => {
+    //     (
+    //         async function () {
+    //             if (!userDetails._id) {
+    //                 let data: any = getLocalStorageData(localStorageKeys.USER_DETAILS);
+    //                 let result = await getRequest(`${singleRecordURL}${data.username}`);
 
-        //             if (result.success) {
-        //                 setToLocalStorage(localStorageKeys.USER_DETAILS, result.data)
-        //                 dispatch(providerActions.save_user(result.data))
-        //             }
-        //         }
-        //     }
-        // )()
-        //eslint-disable-next-line
-    }, [])
+    //                 if (result.success) {
+    //                     setToLocalStorage(localStorageKeys.USER_DETAILS, result.data)
+    //                     dispatch(providerActions.save_user(result.data))
+    //                 }
+    //             }
+    //         }
+    //     )()
+    // }, [])
     return (
         <Container maxWidth='md'>
             <Grid container>
