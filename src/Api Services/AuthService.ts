@@ -12,41 +12,45 @@ const authInstance = axios.create({
     },
 });
 
+authInstance.interceptors.response.use(
+    function (response) {
+        return response
+    },
+    function (error) {
+        return Promise.reject(error?.response?.data);
+    }
+)
 
 type loginResponseType = {
-    accessToken: string;
+    accessToken?: string;
     message: string;
-    success: Boolean;
-    data: UserDataType;
+    success?: Boolean;
+    data?: UserDataType;
 };
 
 
-export const loginRequest = async (body: any): Promise<loginResponseType | null> => {
+export const loginRequest = async (body: any): Promise<loginResponseType> => {
     try {
-        const loginResponse = await authInstance.post("login", JSON.stringify(body));
-        console.log("loginRespinse", loginResponse);
-        if (loginResponse?.status === 200) {
-            return loginResponse?.data;
-        }
-        return null;
-    } catch (err) {
-        console.log("loginRequest errror", err);
-        return null;
+        const payload = JSON.stringify(body);
+        const loginResponse = await authInstance.post("login", payload);
+        return loginResponse?.data;
+    } catch (error: any) {
+        console.log("loginRequest errror", error);
+        return { message: error?.message }
     }
 };
 
-export const registerRequest = async (body: any) => {
+type registerResponseType = {
+    message: string;
+    success?: Boolean;
+}
+export const registerRequest = async (body: any): Promise<registerResponseType> => {
     try {
-        const registerResponse = await authInstance.post(
-            "register",
-            JSON.stringify(body)
-        );
-        if (registerResponse?.status === 200) {
-            return registerResponse?.data;
-        }
-        return null;
-    } catch (err) {
-        console.log("registerRequest errror", err);
-        return null;
+        const payload = JSON.stringify(body);
+        const registerResponse = await authInstance.post("register", payload);
+        return registerResponse?.data;
+    } catch (error: any) {
+        console.log(error)
+        return { message: error?.message }
     }
 };

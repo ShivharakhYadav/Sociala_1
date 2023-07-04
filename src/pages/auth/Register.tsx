@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerRequest } from "../../Api Services/AuthService";
 import { useDispatch } from "react-redux"
 import providerActions from "../../store/actions/provider/actions";
+import { showToastMessage } from "../../utils/HelperFunction";
 
 type userDetail = {
     username: string,
@@ -36,23 +37,27 @@ const Register = () => {
     }
 
     const registerUser = async () => {
-        debugger
-        const newRequestObj = details
+
+        const newRequestObj = details;
         if (isNaN(details?.emailorphone as any)) {
             newRequestObj.email = details.emailorphone as string;
             delete newRequestObj.emailorphone;
         }
         else {
-            newRequestObj.mobileno = details.emailorphone as number;
+            newRequestObj.mobileno = Number(details.emailorphone);
             delete newRequestObj.emailorphone;
         }
-        const result: any = await registerRequest(newRequestObj);
-        // }
+        const registerResult = await registerRequest(newRequestObj);
+        if (registerResult?.success) {
+            navigate("/")
+        }
+        else {
+            showToastMessage("error", registerResult?.message)
+        }
+
     }
 
-    function checkEmailOrNot(str: string) {
 
-    }
     return (
         <Container disableGutters>
             <Grid container>

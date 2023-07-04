@@ -6,7 +6,7 @@ import { Box, Button, Container, Grid, TextField, Typography } from "@mui/materi
 import { loginRequest } from '../../Api Services/AuthService';
 import { useDispatch, useSelector } from "react-redux";
 import providerActions from "../../store/actions/provider/actions";
-import { tokenDecode } from "../../utils/HelperFunction";
+import { showToastMessage, tokenDecode } from "../../utils/HelperFunction";
 import { getSingleUserRequest } from "../../Api Services/AccountServices";
 import { stateTypes } from "../../Types/types";
 
@@ -31,6 +31,9 @@ function Login() {
             // navigate('/test');
             dispatch(providerActions.save_user(result?.data));
             setToLocalStorage(SOCIALA_USER, { accessToken: result?.accessToken, username: result?.data?.username })
+        }
+        else {
+            showToastMessage("error", result?.message)
         }
     }
 

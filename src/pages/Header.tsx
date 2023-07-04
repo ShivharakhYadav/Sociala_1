@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stateTypes } from '../Types/types';
 import LoopIcon from '@mui/icons-material/Loop';
 import providerActions from '../store/actions/provider/actions';
+import { searchUserRequest } from '../Api Services/AccountServices';
 const settings = ['Profile', 'New Post', 'Dashboard', 'Logout'];
 
 const styles = makeStyles({
@@ -130,7 +131,8 @@ function Header() {
         try {
             setSearched(e.target.value);
             if (e.target.value.length > 0) {
-                const result = await getRequest(`${searchUserURL}?name=${e.target.value}`);
+                const result = await searchUserRequest(e.target.value);
+                console.log("search result ---", result);
                 setResult(result);
             }
         }

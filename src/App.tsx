@@ -14,6 +14,8 @@ import { tokenDecode } from './utils/HelperFunction';
 import { getSingleUserRequest } from './Api Services/AccountServices';
 import providerActions from './store/actions/provider/actions';
 import BasicModal from './pages/NewPost';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.providerReducer?.user);
@@ -59,6 +61,7 @@ function App() {
             </>
         }
       </ Routes>
+      <ToastContainer />
     </>
   )
 }
