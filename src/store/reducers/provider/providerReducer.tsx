@@ -36,7 +36,6 @@ const initialState: initialStateType = {
 }
 
 const providerReducer: any = (state = initialState, action: any) => {
-    console.log("providerReduce", action.type, action.payload)
     switch (action.type) {
         case providersConstant.SAVE_USER: return { ...state, user: action.payload };
 

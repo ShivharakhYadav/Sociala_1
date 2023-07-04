@@ -39,14 +39,11 @@ function Login() {
 
     useEffect(() => {
         (async () => {
-            console.log("Login Called");
             const localData = getLocalStorageData(SOCIALA_USER);
             if (localData != null && localData.accessToken && user.username) {
                 const tokenExpired = tokenDecode(localData?.accessToken)
-                console.log("tokenExpi", tokenExpired)
                 if (!tokenExpired && !user?.username) {
                     const userResult = await getSingleUserRequest(localData?.username);
-                    console.log("userResult", userResult);
                     dispatch(providerActions.save_user(userResult?.data));
                 }
                 // else {

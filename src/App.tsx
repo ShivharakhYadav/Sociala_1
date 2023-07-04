@@ -26,14 +26,11 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      console.log("App Called");
       const localData = getLocalStorageData(SOCIALA_USER);
       if (localData != null && localData.accessToken) {
         const tokenExpired = tokenDecode(localData?.accessToken)
-        console.log("tokenExpi", tokenExpired)
         if (!tokenExpired && !user?.username) {
           const userResult = await getSingleUserRequest(localData?.username);
-          console.log("userResult App", userResult?.data);
           dispatch(providerActions.save_user(userResult?.data));
         }
         else {

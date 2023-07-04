@@ -100,7 +100,6 @@ function PersonalUserProfile(props: any) {
     useEffect(() => {
         console.log('----usrname----', username);
         (async function () {
-            console.log('-------functioncalled')
             let res = await getSingleUserRequest(username as any);
             const { success, data } = res as any;
             console.log(data);
@@ -119,6 +118,7 @@ function PersonalUserProfile(props: any) {
                         setFollowStateMessage("Unfollow");
                     }
                     else {
+                        console.log("data.followings", data.followings);
                         let fol = data.followings.filter((ids: any) => ids === userDetails._id);
                         console.log("Follow Back Status", fol);
                         if (fol.length > 0) {
@@ -140,6 +140,7 @@ function PersonalUserProfile(props: any) {
 
     const requestedToFollow = (e: any) => {
         const title = e.target.title;
+        console.log("Title---", title);
         if (title === "Follow" || title === "Follow Back") {
             try {
                 let requester = userDetails;
@@ -171,8 +172,28 @@ function PersonalUserProfile(props: any) {
         }
 
         if (title === "Unfollow") {
+            let body = {
+                requester_id: userDetails._id,
+                idToDelete: searchedUserDetails._id
+            };
+            fetch("http://localhost:4100/account/unfollow",
+                {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }).then((response) => {
+                    response.json().then((result) => {
+                        console.log(result, "unfoe")
+                        getSingleUserRequest(userDetails.username as string).then((result: any) => {
+                            // setToLocalStorage(localStorageKeys.USER_DETAILS, result.data);
+                            dispatch(providerActions.save_user(result.data));
+                        })
+                    })
+                });
         }
-
     }
 
     const handleConfirmFolllowRequest = async () => {
@@ -198,7 +219,7 @@ function PersonalUserProfile(props: any) {
         if (result.success) {
             setFollowStateMessage("FollowBack");
             // let url = `${singleRecordURL}${userDetails.username}`;
-            getSingleUserRequest(username as string).then((result: any) => {
+            getSingleUserRequest(userDetails.username as string).then((result: any) => {
                 // setToLocalStorage(localStorageKeys.USER_DETAILS, result.data);
                 dispatch(providerActions.save_user(result.data));
             })
@@ -342,9 +363,6 @@ function PersonalUserProfile(props: any) {
                             </Box>
                         </Grid>
                     </Grid>
-                    <>
-                        {console.log('----serched user', searchedUserDetails?.username)}
-                    </>
                 </Container> : <h1>User Not Found</h1>
             }
         </>
