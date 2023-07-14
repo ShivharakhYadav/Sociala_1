@@ -26,9 +26,6 @@ function Home() {
                     let body = { followings: user.followings }
                     const result = await getLatestPost(body);
                     console.log("result result", result);
-
-                    // let result = await postRequest(followPostURL, "", body);
-                    // console.log('result-----------', result)
                     if (result.success && result?.data?.length > 0) {
                         dispatch(providerActions.add_post(result.data));
                     }

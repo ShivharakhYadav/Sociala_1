@@ -50,13 +50,12 @@ function App() {
       socket.emit("userConnected", data);
 
       // listener for notification of requested Follow
-      // socket.on("requestedToFollow", (result: any) => {
-      //   console.log("data for notification", result);
-      //   if (result.success) {
-      //     // setToLocalStorage(localStorageKeys.USER_DETAILS, result.data)
-      //     // dispatch(providerActions.update_user(result.data))
-      //   }
-      // })
+      socket.on("requestedToFollow", (result: any) => {
+        console.log("data for notification", result);
+        if (result.success) {
+          dispatch(providerActions.update_user(result.data))
+        }
+      })
 
       // //changeNotification Status
       // socket.on("changeNotificationStatus", (result: any) => {

@@ -77,20 +77,14 @@ const providerReducer: any = (state = initialState, action: any) => {
                 });
                 return item
             });
-            setToLocalStorage(localStorageKeys.SOCIALA_USER, { ...state.user, notification: notifications })
+
             return {
                 ...state, user: { ...state.user, notification: notifications }
             }
         case providersConstant.FOLLOW_ACCEPTED:
-            // const checkAvail = state?.user?.followings?.filter((ids: any) => ids == action.payload);
-            // if (checkAvail.length < 1) {
-            const newObj = { ...state.user, followings: [...state?.user?.followings, action.payload] };
-            setToLocalStorage(localStorageKeys.SOCIALA_USER, newObj);
             return {
                 ...state, user: { ...state.user, followings: [...state?.user?.followings, action.payload] }
             }
-            // }
-            break;
 
         case providersConstant.LOGOUT: return state.user = {
             _id: "",
