@@ -7,37 +7,39 @@ import providersConstant from '../store/actions/provider/actionTypes';
 import PostCard from '../components/PostCard';
 import { UserDataType } from '../store/reducers/provider/providerReducer';
 import { stateTypes } from '../Types/types';
+import { getLatestPost } from '../Api Services/PostServices';
 
 // import { postRequest } from '../services/Services'
 // import { followPostURL, baseURL } from '../services/Links';
 // import io from 'socket.io-client';
 
 function Home() {
-    console.log()
+    let dispatch = useDispatch();
     const user = useSelector((state: stateTypes) => state?.providerReducer?.user);
+    console.log('---userDetails', user)
 
-    // console.log('---userDetails', userDetails)
-    // let dispatch = useDispatch();
+    useEffect(() => {
+        console.log('called uyseEffectc')
+        if (user?.followings?.length > 0) {
+            (async () => {
+                try {
+                    let body = { followings: user.followings }
+                    const result = await getLatestPost(body);
+                    console.log("result result", result);
 
-    // useEffect(() => {
-    //     console.log('called uyseEffectc')
-    //     if (userDetails?.user?.followings?.length > 0) {
-    //         (async () => {
-    //             try {
-    //                 let body = { followings: userDetails.user.followings }
-    //                 // let result = await postRequest(followPostURL, "", body);
-    //                 // console.log('result-----------', result)
-    //                 // if (result.success) {
-    //                 //     dispatch(providerActions.add_post(result.data));
-    //                 // }
-    //             }
-    //             catch (err) {
-    //                 console.log(err);
-    //             }
-    //         })()
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [userDetails?.user?.followings])
+                    // let result = await postRequest(followPostURL, "", body);
+                    // console.log('result-----------', result)
+                    if (result.success && result?.data?.length > 0) {
+                        dispatch(providerActions.add_post(result.data));
+                    }
+                }
+                catch (err) {
+                    console.log(err);
+                }
+            })()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user?.followings])
 
     return (
         <Stack alignItems="center" spacing={3} >

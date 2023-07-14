@@ -36,6 +36,7 @@ const initialState: initialStateType = {
 }
 
 const providerReducer: any = (state = initialState, action: any) => {
+    console.log("payload", action)
     switch (action.type) {
         case providersConstant.SAVE_USER: return { ...state, user: action.payload };
 
@@ -60,8 +61,9 @@ const providerReducer: any = (state = initialState, action: any) => {
                 }
             }
             break;
+
         case providersConstant.FOLLOWING_POSTS: return {
-            ...state, posts: action.payload
+            ...state, user: { ...state.user, post: action.payload }
         }
 
         case providersConstant.CHANGE_NOTIFICATION_STATUS:
