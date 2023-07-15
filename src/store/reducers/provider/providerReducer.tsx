@@ -8,8 +8,8 @@ export type UserDataType = {
     followers: Array<number>;
     followings: Array<number>;
     name: string;
-    notifications: Array<object>;
-    pendingRequests: Array<number>;
+    notification: Array<object>;
+    pendingRequest: Array<number>;
     mobileno: string;
     post: Array<object>;
     saved: Array<object>;
@@ -19,14 +19,14 @@ export type UserDataType = {
 export interface initialStateType {
     user: UserDataType;
 }
-const initialState: initialStateType = {
+const initialState: initialStateType | any = {
     user: {
         _id: "",
         followers: [],
         followings: [],
         name: "",
-        notifications: [],
-        pendingRequests: [],
+        notification: [],
+        pendingRequest: [],
         mobileno: "",
         post: [],
         saved: [],
@@ -35,29 +35,31 @@ const initialState: initialStateType = {
     }
 }
 
+// type payloadType = {
+//     type: string,
+//     payload: UserDataType
+// }
+
 const providerReducer: any = (state = initialState, action: any) => {
     console.log("payload", action)
     switch (action.type) {
         case providersConstant.SAVE_USER: return { ...state, user: action.payload };
 
         case providersConstant.UPDATE_USER:
-            let oldValue: any = state.user;
             for (let key in action.payload) {
                 if (Array.isArray(action.payload[key])) {
-                    oldValue[key] = [...oldValue[key], ...action.payload[key]]
-                }
-                else {
-                    oldValue[key] = action.payload[key]
-                }
-            }
-            setToLocalStorage(localStorageKeys.SOCIALA_USER, oldValue);
-            for (let key in action.payload) {
-                if (Array.isArray(action.payload[key])) {
-                    return { ...state, user: { ...state.user, [key]: oldValue[key] } }
+                    return {
+                        user: {
+                            ...state.user,
+                            [key]: [...state.user[key], ...action.payload[key]]
+                            // [key]: action.payload[key]
+
+                        }
+                    }
 
                 }
                 else {
-                    return { ...state, user: { ...state.user, [key]: action.payload[key] } }
+                    return { user: { ...state.user, [key]: action.payload[key] } }
                 }
             }
             break;
@@ -68,8 +70,8 @@ const providerReducer: any = (state = initialState, action: any) => {
 
         case providersConstant.CHANGE_NOTIFICATION_STATUS:
             let ids = action.payload;
-            let notifications = state?.user?.notifications;
-            notifications?.map((item: any) => {
+            let notification = state?.user?.notification;
+            notification?.map((item: any) => {
                 ids.map((singleId: any) => {
                     if ((singleId == item.notificationId)) {
                         item.readed = true;
@@ -79,7 +81,7 @@ const providerReducer: any = (state = initialState, action: any) => {
             });
 
             return {
-                ...state, user: { ...state.user, notification: notifications }
+                ...state, user: { ...state.user, notification: notification }
             }
         case providersConstant.FOLLOW_ACCEPTED:
             return {
@@ -91,8 +93,8 @@ const providerReducer: any = (state = initialState, action: any) => {
             followers: [],
             followings: [],
             name: "",
-            notifications: [],
-            pendingRequests: [],
+            notification: [],
+            pendingRequest: [],
             mobileno: "",
             post: [],
             saved: [],

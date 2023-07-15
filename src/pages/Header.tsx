@@ -167,7 +167,7 @@ function Header() {
             onClose={() => setNotificationAnchor(null)}
         >
             {
-                user?.notifications?.length > 0 && user?.notifications.map((item: any, i: any) => {
+                user?.notification?.length > 0 && user?.notification.map((item: any, i: any) => {
                     if (item.type === "RequestedToFollow") {
                         return <MenuItem
                             title={`${item.type}${Date.now()}`}
@@ -250,13 +250,13 @@ function Header() {
                         </IconButton>
                         <IconButton sx={{ backgroundColor: "currentcolor" }}
                             size="large"
-                            aria-label="show 17 new notifications"
+                            aria-label="show 17 new notification"
                             aria-controls={notificationId}
                             aria-haspopup="true"
                             onClick={handleNotification}
                         // color="inherit"
                         >
-                            <Badge badgeContent={user?.notifications?.filter((item: any) => !item.readed).length} color="error">
+                            <Badge badgeContent={user?.notification?.filter((item: any) => !item.readed).length} color="error">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>

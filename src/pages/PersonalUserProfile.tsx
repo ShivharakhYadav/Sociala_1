@@ -105,11 +105,11 @@ function PersonalUserProfile(props: any) {
             console.log(data);
             if (success) {
                 setSingleUserDetails(data);
-                let available = data.pendingRequests.filter((item: any) => item._id === userDetails._id);
+                let available = data.pendingRequest.filter((item: any) => item._id === userDetails._id);
 
                 console.log("Requested Status", available)
                 if (available.length > 0) {
-                    setFollowStateMessage("Requested")
+                    // setFollowStateMessage("Requested")
                 }
                 else {
                     let checkInFollowers = data.followers.filter((ids: any) => ids === userDetails._id);
@@ -160,9 +160,9 @@ function PersonalUserProfile(props: any) {
                 }).then((response) => {
                     response.json().then((result) => {
                         if (result.success) {
-                            setFollowStateMessage("Requested")
+                            // setFollowStateMessage("Requested")
                         }
-                        //searchedUserDetails.pendingRequests.push(userDetails);
+                        //searchedUserDetails.pendingRequest.push(userDetails);
                     })
                 })
             }
@@ -197,7 +197,7 @@ function PersonalUserProfile(props: any) {
     }
 
     const handleConfirmFolllowRequest = async () => {
-        let available = userDetails?.pendingRequests?.filter((item: any) => item.username === username);
+        let available = userDetails?.pendingRequest?.filter((item: any) => item.username === username);
         let body = {
             acceptedId: userDetails._id,
             requestedId: searchedUserDetails._id,
@@ -233,7 +233,7 @@ function PersonalUserProfile(props: any) {
                     <Grid container bgcolor={"aqua"} >
                         {/* <Grid item xl={5} md={12} sm={12} bgcolor={"gainsboro"} m="auto"> */}
                         {
-                            userDetails?.pendingRequests?.length > 0 && userDetails?.pendingRequests?.
+                            userDetails?.pendingRequest?.length > 0 && userDetails?.pendingRequest?.
                                 filter((item: any) => item.username === username)
                                 .map((it: any, i: any) => {
                                     return <Grid item key={`${it.username}${i}00`} xl={5} md={12} sm={12} bgcolor={"gainsboro"} m="auto">

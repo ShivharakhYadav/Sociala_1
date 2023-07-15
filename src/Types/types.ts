@@ -9,11 +9,11 @@ export type UserDataType = {
     followers: Array<number>;
     followings: Array<number>;
     account_type?: String;
-    notifications: Array<object>;
+    notification: Array<object>;
     post: Array<object>;
     saved?: Array<object>;
     tagged?: Array<object>;
-    pendingRequests?: Array<number>;
+    pendingRequest?: Array<number>;
     bio?: String;
     gender?: String;
     profileimg?: String;
