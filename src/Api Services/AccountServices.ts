@@ -12,7 +12,10 @@ type responseTypes = {
 };
 
 const accountInstance = axios.create({
-    baseURL: accountURL
+    baseURL: accountURL,
+    headers: {
+        "Content-Type": "application/json"
+    }
 });
 
 accountInstance.interceptors.request.use(
@@ -61,6 +64,15 @@ export const searchUserRequest = async (key: string) => {
     }
 }
 
+export const changeNotificationStatus = async (userid: string | undefined, body: any) => {
+    try {
+        // const payload = JSON.stringify(body);
+        const response = await accountInstance.post(`changeNotificationStatus/${userid}`, body);
+        return response;
+    } catch (error) {
+        return null;
+    }
+}
 
 // export const singleRecordURL = `${accountURL}user/`;
 // export const searchUserURL = `${accountURL}search/`;

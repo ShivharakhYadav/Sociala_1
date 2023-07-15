@@ -109,7 +109,7 @@ function PersonalUserProfile(props: any) {
 
                 console.log("Requested Status", available)
                 if (available.length > 0) {
-                    // setFollowStateMessage("Requested")
+                    setFollowStateMessage("Requested")
                 }
                 else {
                     let checkInFollowers = data.followers.filter((ids: any) => ids === userDetails._id);
@@ -160,7 +160,7 @@ function PersonalUserProfile(props: any) {
                 }).then((response) => {
                     response.json().then((result) => {
                         if (result.success) {
-                            // setFollowStateMessage("Requested")
+                            setFollowStateMessage("Requested")
                         }
                         //searchedUserDetails.pendingRequest.push(userDetails);
                     })

@@ -1,6 +1,6 @@
 
 export type UserDataType = {
-    _id?: string
+    _id?: string;
     id?: string | undefined;
     username: string;
     name: string;

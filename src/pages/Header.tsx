@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stateTypes } from '../Types/types';
 import LoopIcon from '@mui/icons-material/Loop';
 import providerActions from '../store/actions/provider/actions';
-import { searchUserRequest } from '../Api Services/AccountServices';
+import { changeNotificationStatus, searchUserRequest } from '../Api Services/AccountServices';
 const settings = ['Profile', 'New Post', 'Dashboard', 'Logout'];
 
 const styles = makeStyles({
@@ -131,10 +131,13 @@ function Header() {
 
     const handleNotification = async (event: React.MouseEvent<HTMLElement>) => {
         setNotificationAnchor(event.currentTarget);
-        // const ids = userDetails?.notification.filter((item: any) => !item.readed).map((item: any) => { return item.notificationId })
-        // if (ids.length > 0) {
-        //     let result = await postRequest(`${notificationURL}${userDetails._id}`, "", { notification_ids: ids })
-        // }
+        const ids = user?.notification.filter((item: any) => !item.readed).map((item: any) => { return item.notificationId })
+        if (ids.length > 0) {
+            let result = await changeNotificationStatus(user._id, { notification_ids: ids });
+            if (result?.data?.success) {
+                dispatch(providerActions.change_notification_status(ids))
+            }
+        }
     }
 
     const searchuser = async (e: any) => {
@@ -242,6 +245,7 @@ function Header() {
                         }
                     </Box>
                     <Box sx={{ width: "17%", display: "flex", justifyContent: "space-between" }}>
+                        <Typography sx={{ color: "red" }} variant='h6'>{user?.username}</Typography>
                         <IconButton sx={{ backgroundColor: "currentcolor" }}>
                             <HomeIcon />
                         </IconButton>
