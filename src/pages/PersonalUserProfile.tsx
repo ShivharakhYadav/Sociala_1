@@ -95,6 +95,7 @@ function PersonalUserProfile(props: any) {
     let { username } = useParams();
     const [value, setValue] = useState(0);
     const userDetails = useSelector((state: any) => state?.providerReducer?.user);
+    console.log("--userDetails", userDetails);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => { setValue(newValue); };
     const [followStateMessage, setFollowStateMessage] = useState("Follow");
     useEffect(() => {

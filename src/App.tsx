@@ -44,7 +44,7 @@ function App() {
 
   useEffect(() => {
     console.log('socket useEffect Called');
-    if (user._id) {
+    if (user?._id) {
       let data = { userid: user._id, username: user.username }
       const socket = io(baseURL);
       socket.emit("userConnected", data);
@@ -53,10 +53,23 @@ function App() {
       socket.on("requestedToFollow", (result: any) => {
         console.log("data for notification", result);
         if (result.success) {
-          dispatch(providerActions.update_user(result.data))
+          dispatch(providerActions.requestedToFollowNotification(result.data))
         }
       })
 
+      socket.on("requestedToFollowNotification", (result: any) => {
+        console.log("data for notification", result);
+        if (result.success) {
+          dispatch(providerActions.RequestAcceptedNotification(result.data))
+        }
+      })
+
+      // socket.on("requestedToFollow", (result: any) => {
+      //   console.log("data for notification", result);
+      //   if (result.success) {
+      //     dispatch(providerActions.requestedToFollowNotification(result.data))
+      //   }
+      // })
       // //changeNotification Status
       // socket.on("changeNotificationStatus", (result: any) => {
       //   console.log("changeNotificationStatus from socket data", result);
@@ -78,7 +91,7 @@ function App() {
       //   console.log('data from mew post', data);
       // })
     }
-  }, [user._id])
+  }, [user?._id])
   return (
     <>
       {user?.username && <Header />}

@@ -20,10 +20,26 @@ const change_notification_status = (payload: any) => ({
     payload: payload
 })
 
-const followRequestAccepted = (payload: any)=>({
-    type:providersConstant.FOLLOW_ACCEPTED,
-    payload:payload
+const followRequestAccepted = (payload: any) => ({
+    type: providersConstant.FOLLOW_ACCEPTED,
+    payload: payload
 })
 
-const providerActions = { save_user, add_post, update_user, change_notification_status,followRequestAccepted };
+const requestedToFollowNotification = (payload: any) => ({
+    type: providersConstant.REQUESTED_TO_FOLLOW_NOTIFICATION,
+    payload: payload
+});
+
+const RequestAcceptedNotification = (payload: any) => ({
+    type: providersConstant.FOLLOW_REQUEST_ACCEPTED_NOTIFICATION,
+    payload: payload
+});
+
+const providerActions = {
+    save_user, add_post, update_user,
+    change_notification_status,
+    followRequestAccepted,
+    RequestAcceptedNotification,
+    requestedToFollowNotification
+};
 export default providerActions;

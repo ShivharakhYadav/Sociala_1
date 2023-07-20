@@ -19,7 +19,7 @@ export type UserDataType = {
 export interface initialStateType {
     user: UserDataType;
 }
-const initialState: initialStateType | any = {
+const initialState: initialStateType = {
     user: {
         _id: "",
         followers: [],
@@ -41,32 +41,50 @@ const initialState: initialStateType | any = {
 // }
 
 const providerReducer: any = (state = initialState, action: any) => {
+    // const { user } = state;
     console.log("payload", action)
     switch (action.type) {
         case providersConstant.SAVE_USER: return { ...state, user: action.payload };
 
         case providersConstant.UPDATE_USER:
-            for (let key in action.payload) {
-                if (Array.isArray(action.payload[key])) {
-                    return {
-                        user: {
-                            ...state.user,
-                            [key]: [...state.user[key], ...action.payload[key]]
-                            // [key]: action.payload[key]
+            // for (let key in action.payload) {
+            //     if (Array.isArray(action.payload[key])) {
+            //         return {
+            //             user: {
+            //                 ...state.user,
+            //                 [key]: [...state.user[key], ...action.payload[key]]
+            //                 // [key]: action.payload[key]
 
-                        }
-                    }
+            //             }
+            //         }
 
-                }
-                else {
-                    return { user: { ...state.user, [key]: action.payload[key] } }
-                }
-            }
-            break;
+            //     }
+            //     else {
+            //         return { user: { ...state.user, [key]: action.payload[key] } }
+            //     }
+            // }
+            return;
 
         case providersConstant.FOLLOWING_POSTS: return {
             ...state, user: { ...state.user, post: action.payload }
         }
+
+        case providersConstant.REQUESTED_TO_FOLLOW_NOTIFICATION:
+            return {
+                ...state, user: {
+                    ...state.user,
+                    notification: [...state.user.notification, ...action.payload.notification],
+                    pendingRequest: [...state.user.pendingRequest, ...action.payload.pendingRequest]
+                }
+            };
+
+        case providersConstant.FOLLOW_REQUEST_ACCEPTED_NOTIFICATION:
+            return {
+                ...state, user: {
+                    ...state.user,
+                    notification: [...state.user.notification, ...action.payload.notification]
+                }
+            };
 
         case providersConstant.CHANGE_NOTIFICATION_STATUS:
             let ids = action.payload;
